@@ -34,9 +34,10 @@ class maven::maven(
     #url      => 'http://repo1.maven.org/maven2',
     #username => '',
     #password => '',
-  } ) {
+  },
+  $archive_dir = '/tmp') {
 
-  $archive = "/tmp/apache-maven-${version}-bin.tar.gz"
+  $archive = "${archive_dir}/apache-maven-${version}-bin.tar.gz"
 
   # Avoid redownloading when tmp tar.gz is deleted
   if $::maven_version != $version {
@@ -59,7 +60,7 @@ class maven::maven(
       }
     }
     exec { 'maven-untar':
-      command => "tar xf /tmp/apache-maven-${version}-bin.tar.gz",
+      command => "tar xf /${archive_dir}/apache-maven-${version}-bin.tar.gz",
       cwd     => '/opt',
       creates => "/opt/apache-maven-${version}",
       path    => ['/bin','/usr/bin'],
